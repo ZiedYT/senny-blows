@@ -16,30 +16,21 @@ print("Starting....")
 exename = sys.argv[0]
 
 def hideConsole():
-    """
-    Hides the console window in GUI mode. Necessary for frozen application, because
-    this application support both, command line processing AND GUI mode and theirfor
-    cannot be run via pythonw.exe.
-    """
-
     whnd = ctypes.windll.kernel32.GetConsoleWindow()
     if whnd != 0:
         ctypes.windll.user32.ShowWindow(whnd, 0)
-        # if you wanted to close the handles...
-        #ctypes.windll.kernel32.CloseHandle(whnd)
 
 def showConsole():
-    """Unhides console window"""
     whnd = ctypes.windll.kernel32.GetConsoleWindow()
     if whnd != 0:
         ctypes.windll.user32.ShowWindow(whnd, 1)
+
 if(not "_console.exe" in exename):
     hideConsole()
 
 class MainWindow(QMainWindow):
     def __init__(self , app ):
         super().__init__()
-        self.lastSpin = 0
         self.data={}
         self.ports=[]
         self.arduino=None
@@ -55,7 +46,7 @@ class MainWindow(QMainWindow):
         self.start_listener()
         self.timer = QTimer()
         self.timer.timeout.connect(self.spin)
-        self.timer.start(100)
+        self.timer.start(1000)
         self.Login()
 
     def initialize(self):
@@ -277,18 +268,11 @@ class MainWindow(QMainWindow):
     def manualBullet(self):
         self.arduino.addQueue()
 
-    def changeGifAmount(self):
-        pass
-        # self.socketStreamelements.giftedReq = self.spinBox_amountgifted.value()
-        # self.socketStreamelements.giftedMulti = self.checkBox_mutiplegifted.isChecked()
 
     def start_listener(self):
         # self.socketStreamelements = Socket()
         self.socketStreamelements = StreamElementsClient(self.lineEdit_SEtoken.text())
         self.socketStreamelements.connect() 
-        # self.socketStreamelements.giftedReq = self.spinBox_amountgifted.value()
-        self.spinBox_amountgifted.valueChanged.connect(self.changeGifAmount)
-        self.checkBox_mutiplegifted.clicked.connect(self.changeGifAmount)
         self.qthreadStreamelements = QThread()
         self.socketStreamelements.moveToThread(self.qthreadStreamelements)
 
@@ -304,8 +288,6 @@ class MainWindow(QMainWindow):
 
         self.qthreadStreamelements.start()
         
-
-
         self.socketTwitch = Socket(self.lineEdit_twitchtoken.text(), self.lineEdit_channelname.text())
         self.qthreadTwitch = QThread()
         self.socketTwitch.moveToThread(self.qthreadTwitch)
@@ -320,11 +302,8 @@ class MainWindow(QMainWindow):
         self.arduino = arduino(port=self.data.get("port",""))
         self.arduino.duration=self.doubleSpinBox_duration.value()
 
-
     def spin(self):
-        if(time.time() - self.lastSpin > 1):
-            self.updatePorts()
-            self.lastSpin=time.time()
+        self.updatePorts()
 
         if(not self.socketTwitch.valid):
             self.lineEdit_twitchtoken.setStyleSheet("border: 3px solid red;")
