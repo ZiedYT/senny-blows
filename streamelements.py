@@ -5,16 +5,16 @@ ssl_cert_path='certifi/cacert.pem'
 os.environ['SSL_CERT_FILE']=ssl_cert_path
 
 class StreamElementsClient(QObject):
-    giftedSubs = pyqtSignal(int)
+    giftedSubs = pyqtSignal(int,int)
     bits = pyqtSignal(int)
-    resub = pyqtSignal()
     finished = pyqtSignal()
+    cachedSubs = {}
     def __init__(self, jwt):
         super().__init__()
         self.jwt = jwt
         self.connected=False
         # Initialize the Socket.IO client
-        self.sio = socketio.Client()
+        self.sio = socketio.Client(ssl_verify=False)
         # self.gifted={}
         # self.giftedReq=1
         # self.giftedMulti=True
@@ -68,36 +68,26 @@ class StreamElementsClient(QObject):
         print("on_unauthorized",data)
 
     def on_event(self, data,ts):
-        # print(data)
-        print("on_event",data)
         if(data["type"]=='subscriber'):
-            if( not data["data"].get("gifted",False) ):
-                self.resub.emit() # resub
-                return
-            
-            if(data.get("isMock",False)):
-                if(data.get("activityGroup",None)==None):
-                    self.giftedSubs.emit(1) # replayed direct gifted
+            if(data.get("isMock",False) and (data["data"].get("gifted",False)) ):
+                if(data.get("activityGroup",None)!=None):
+                    activityGroup = data["activityGroup"]
+                    if( activityGroup in list(self.cachedSubs.keys()) ):
+                        amount= self.cachedSubs[activityGroup]
+                        tier = int(data["data"].get("tier",1000))
+                        tier = int(tier/1000)
+                        self.cachedSubs.pop(activityGroup)
+                        self.giftedSubs.emit(tier,amount)
+                else:
+                    tier = int(data["data"].get("tier",1000))
+                    tier = int(tier/1000)
+                    self.giftedSubs.emit(tier,1) # replayed direct gifted
                     return            
-
-            # keys= list(self.gifted.keys())
-            # activityGroup= data["activityGroup"]
-            # if (not activityGroup in keys):
-            #     self.gifted[activityGroup] = {"time":time.time(), "count":0}
-            # self.gifted[activityGroup]["count"] += 1
-            # if(self.gifted[activityGroup]["count"] == self.giftedReq ):
-            #     if(self.giftedMulti):
-            #         self.gifted[activityGroup]["count"] = 0
-            #     self.giftedSubs.emit(self.giftedReq)
-            
-            # for key in list(self.gifted.keys()):
-            #     if( time.time() - self.gifted[key]["time"] > 20 ):
-            #         self.gifted.pop(key)
 
         elif(data["type"]=='communityGiftPurchase'):
             if(data.get("isMock",False)):
                 amount = int(data["data"]["amount"])
-                self.giftedSubs.emit(amount) # replayed bulk purchase gifted
+                self.cachedSubs[data["activityGroup"]] = amount
 
         elif(data["type"]=='cheer'):
             amount = int(data["data"]["amount"])

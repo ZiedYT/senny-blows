@@ -8,7 +8,7 @@ import websocket
 sslopt_ca_certs = {'ca_certs': 'certifi/cacert.pem'}
 
 class Socket(QObject):
-    giftedSubs = pyqtSignal(int)
+    giftedSubs = pyqtSignal(int,int)
     bits = pyqtSignal(int)
     resub = pyqtSignal()
     finished = pyqtSignal()
@@ -97,8 +97,6 @@ class Socket(QObject):
             }
         
         res = requests.post('https://api.twitch.tv/helix/eventsub/subscriptions', headers=self.headers, json=body).json()
-        # {'error': 'Forbidden', 'status': 403, 'message': 'subscription missing proper authorization'}
-        print(res)
         self.valid = (res.get("message","")!="subscription missing proper authorization")
 
     def reconnect(self):
@@ -110,11 +108,6 @@ class Socket(QObject):
         if(self.channel_name =="" or self.token =="" or self.channelID=="" ):
             self.valid= False
             return False
-        
-        # {'error': 'Forbidden', 'status': 403, 'message': 'subscription missing proper authorization'}
-        # url = f'https://api.twitch.tv/helix/users?login={self.channel_name}'
-        # response = requests.get(url, headers=self.headers).json()
-        # self.valid = not response.get('message',"")=='Invalid OAuth token'
         return self.valid
     
         
@@ -134,7 +127,7 @@ class Socket(QObject):
 
             if(self.channel_name == "ziedyt" and msg["metadata"]["message_type"]!="session_keepalive"):
                 print("-------------------")
-                self.giftedSubs.emit(1)
+                self.giftedSubs.emit(1,1)
                 msgType= msg["payload"]['subscription']["type"]
                 print(msg)
 
@@ -142,13 +135,9 @@ class Socket(QObject):
                 msgType= msg["payload"]['subscription']["type"]
                 if ( msgType== "channel.subscription.gift"):
                     amount = int(msg["payload"]["event"]["total"])
-                    self.giftedSubs.emit(amount)
-                # if ( msgType== "channel.cheer"):
-                #     amount = int(msg["payload"]["event"]["bits"])
-                #     self.bits.emit(amount)
-                
-                # if( msgType== "channel.subscription.message" or msgType== "channel.subscribe"):
-                #     self.resub.emit()
+                    tier = int(msg["payload"]["event"].get("tier",1000))
+                    tier = int(tier/1000)
+                    self.giftedSubs.emit(tier,amount)
 
     def close(self):
         self.run_flag=False
@@ -161,7 +150,6 @@ class Socket(QObject):
         }
         response = requests.get('https://api.twitch.tv/helix/eventsub/subscriptions', headers=headers)
         for sub in response.json()["data"]:
-            # print(sub["id"])
             headers = {
             'Authorization': 'Bearer {}'.format(self.token),
             'Client-Id': '{}'.format(self.client_id),
@@ -173,10 +161,3 @@ class Socket(QObject):
             response = requests.delete('https://api.twitch.tv/helix/eventsub/subscriptions', params=params, headers=headers)
         
         self.ws=None
-
-
-# channel_name="ziedyt"
-# token="1ztmx3sk1iip3ofvtj8q3h33gij8vt"
-
-# socket = Socket()
-# socket.updateCredentials(channel_name,token)

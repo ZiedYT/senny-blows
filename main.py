@@ -93,8 +93,9 @@ class MainWindow(QMainWindow):
     def loadJson(self):
         jsonpath = os.path.join(self.save_folder,"data.json")
         self.data["bits"]={}
-        self.data["gifted"]={}
-        self.data["subs"]={}
+        self.data["giftedT1"]={}
+        self.data["giftedT2"]={}
+        self.data["giftedT3"]={}
 
         if(not os.path.isfile(jsonpath)):
             return
@@ -110,36 +111,33 @@ class MainWindow(QMainWindow):
         self.lineEdit_channelname.setText(self.data["channel_name"] )
         self.lineEdit_SEtoken.setText(self.data["streamelementstoken"])
         self.lineEdit_twitchtoken.setText(self.data["twitchtoken"])
-        self.checkBox_active.setChecked(tempdata.get("active",False) )
-        self.doubleSpinBox_duration.setValue(tempdata.get("duration",0.5))
+        self.doubleSpinBox_duration.setValue(tempdata.get("duration",1))
+        self.checkBox_multiple.setChecked(tempdata.get("multiple",True))
         self.currport = tempdata.get("port","")
-        # self.updatePorts()
 
         self.checkBox_bits.setChecked( tempdata.get("bits",{}).get("use",False) )
-        self.spinBox_amountbits.setValue(tempdata.get("bits",{}).get("amount",100) )
-        self.checkBox_mutiplebits.setChecked( tempdata.get("bits",{}).get("multi",False) )
-
-        self.checkBox_gifted.setChecked( tempdata.get("gifted",{}).get("use",False) )
-        self.spinBox_amountgifted.setValue(tempdata.get("gifted",{}).get("amount",100) )
-        self.checkBox_mutiplegifted.setChecked( tempdata.get("gifted",{}).get("multi",False) )
-
-        self.checkBox_subs.setChecked(tempdata.get("subs",{}).get("use",False))
+        self.spinBox_bits_amount.setValue(tempdata.get("bits",{}).get("amount",100) )
+        
+        self.checkBox_giftedT1.setChecked( tempdata.get("giftedT1",{}).get("use",False) )
+        self.spinBox_giftedT1_amount.setValue(tempdata.get("giftedT1",{}).get("amount",1) )
+        self.checkBox_giftedT2.setChecked( tempdata.get("giftedT2",{}).get("use",False) )
+        self.spinBox_giftedT2_amount.setValue(tempdata.get("giftedT2",{}).get("amount",1) )
+        self.checkBox_giftedT3.setChecked( tempdata.get("giftedT3",{}).get("use",False) )
+        self.spinBox_giftedT3_amount.setValue(tempdata.get("giftedT3",{}).get("amount",1) )
 
     def saveJson(self):
-        
-        self.data["port"] = self.comboBox_port.currentText()
-        self.data["active"] = self.checkBox_active.isChecked()        
+        self.data["port"] = self.comboBox_port.currentText()  
         self.data["duration"] = self.doubleSpinBox_duration.value()
+        self.data["multiple"]= self.checkBox_multiple.isChecked()
 
         self.data["bits"]["use"] = self.checkBox_bits.isChecked()
-        self.data["bits"]["multi"] = self.checkBox_mutiplebits.isChecked()
-        self.data["bits"]["amount"] = self.spinBox_amountbits.value()
-
-        self.data["gifted"]["use"] = self.checkBox_gifted.isChecked()
-        self.data["gifted"]["multi"] = self.checkBox_mutiplegifted.isChecked()
-        self.data["gifted"]["amount"] = self.spinBox_amountgifted.value()
-
-        self.data["subs"]["use"] = self.checkBox_subs.isChecked()
+        self.data["bits"]["amount"] = self.spinBox_bits_amount.value()
+        self.data["giftedT1"]["use"] = self.checkBox_giftedT1.isChecked()
+        self.data["giftedT1"]["amount"] = self.spinBox_giftedT1_amount.value()
+        self.data["giftedT2"]["use"] = self.checkBox_giftedT2.isChecked()
+        self.data["giftedT2"]["amount"] = self.spinBox_giftedT2_amount.value()
+        self.data["giftedT3"]["use"] = self.checkBox_giftedT3.isChecked()
+        self.data["giftedT3"]["amount"] = self.spinBox_giftedT3_amount.value()
 
         file = os.path.join(self.save_folder, 'data.json')
         with open(file, 'w') as outfile:
@@ -159,22 +157,24 @@ class MainWindow(QMainWindow):
 
         self.pushButton_login:QPushButton = self.findChild(QPushButton,"pushButton_login")
         self.pushButton_login.clicked.connect(self.Login)
-        self.checkBox_active: QCheckBox = self.findChild(QCheckBox, "checkBox_active")
-        self.checkBox_gifted: QCheckBox = self.findChild(QCheckBox,"checkBox_gifted")
-        self.checkBox_subs: QCheckBox = self.findChild(QCheckBox,"checkBox_subs")
-        self.checkBox_bits: QCheckBox = self.findChild(QCheckBox,"checkBox_bits")
-        self.checkBox_mutiplegifted: QCheckBox = self.findChild(QCheckBox,"checkBox_mutiplegifted")
-        self.checkBox_mutiplebits: QCheckBox = self.findChild(QCheckBox,"checkBox_mutiplebits")
-        self.spinBox_amountgifted:QSpinBox = self.findChild(QSpinBox,"spinBox_amountgifted")
-        self.spinBox_amountbits:QSpinBox = self.findChild(QSpinBox,"spinBox_amountbits")
-        self.comboBox_port:QComboBox = self.findChild(QComboBox,"comboBox_port")
-        self.doubleSpinBox_duration:QDoubleSpinBox = self.findChild(QDoubleSpinBox,"doubleSpinBox_duration")
-        self.doubleSpinBox_duration.valueChanged.connect(self.updateDuration)
         self.pushButton_manual:QPushButton=self.findChild(QPushButton,"pushButton_manual")
         self.pushButton_manual.clicked.connect(self.manualBullet)
         self.pushButton_connect:QPushButton=self.findChild(QPushButton,"pushButton_connect")
         self.pushButton_connect.clicked.connect(self.connectESP)
+        self.comboBox_port:QComboBox = self.findChild(QComboBox,"comboBox_port")
+        self.doubleSpinBox_duration:QDoubleSpinBox = self.findChild(QDoubleSpinBox,"doubleSpinBox_duration")
+        self.doubleSpinBox_duration.valueChanged.connect(self.updateDuration)
 
+
+        self.checkBox_giftedT1:QCheckBox = self.findChild(QCheckBox,"checkBox_giftedT1")
+        self.spinBox_giftedT1_amount:QSpinBox=self.findChild(QSpinBox,"spinBox_giftedT1_amount")
+        self.checkBox_giftedT2:QCheckBox=self.findChild(QCheckBox,"checkBox_giftedT2")
+        self.spinBox_giftedT2_amount:QSpinBox=self.findChild(QSpinBox,"spinBox_giftedT2_amount")
+        self.checkBox_giftedT3:QCheckBox=self.findChild(QCheckBox,"checkBox_giftedT3")
+        self.spinBox_giftedT3_amount:QSpinBox=self.findChild(QSpinBox,"spinBox_giftedT3_amount")
+        self.checkBox_bits:QCheckBox=self.findChild(QCheckBox,"checkBox_bits")
+        self.spinBox_bits_amount:QSpinBox=self.findChild(QSpinBox,"spinBox_bits_amount")
+        self.checkBox_multiple:QCheckBox=self.findChild(QCheckBox,"checkBox_multiple")
 
     def connectESP(self):
         if(self.arduino!=None):
@@ -226,42 +226,28 @@ class MainWindow(QMainWindow):
         self.data["twitchtoken"] = twitchtoken
         self.data["channel_name"]=channel_name
 
-        # self.data["token"] = token
-
-        # # self.socketStreamelements.updateCredentials(self.data["channel_name"], self.data["token"])
-        # if(not self.socketStreamelements.valid):
-        #     self.lineEdit_token.setStyleSheet("border: 3px solid red;")
-        # else: 
-        #     self.lineEdit_token.setStyleSheet("border: 1px solid black;")
-
-    def onSub(self):
-        print("onSub")
-        if(not self.checkBox_active.isChecked()):
-            return
-        if (self.checkBox_subs.isChecked()):
-            self.arduino.addQueue()
-
-    def onGifted(self,amount):
-        print("onGifted",amount)
-        if(not self.checkBox_active.isChecked()):
-            return
-        if(self.checkBox_gifted.isChecked()):
-            mingifts= self.spinBox_amountgifted.value()
+    def onGifted(self,tier,amount):
+        print("onGifted; tier:",tier,";amount:",amount)
+        spinbox:QSpinBox = self.findChild(QSpinBox,"spinBox_giftedT{}_amount".format(tier))
+        checkbox:QCheckBox =self.findChild(QCheckBox,"checkBox_giftedT{}".format(tier))
+        if(checkbox.isChecked()):
+            mingifts= spinbox.value()
             if(amount>=mingifts):
                 count = 1 
-                if(self.checkBox_mutiplegifted.isChecked()):
+                if(self.checkBox_multiple.isChecked()):
                     count = int (amount / mingifts)
                 self.arduino.addQueue(count)
 
+
     def onBits(self,amount):
         print("onBits",amount)
-        if(not self.checkBox_active.isChecked()):
+        if(not self.checkBox_bits.isChecked()):
             return
         if(self.checkBox_bits.isChecked()):
-            minbits= self.spinBox_amountbits.value()
+            minbits= self.spinBox_bits_amount.value()
             if(amount>=minbits):
                 count = 1 
-                if(self.checkBox_mutiplebits.isChecked()):
+                if(self.checkBox_multiple.isChecked()):
                     count = int (amount / minbits)
                 self.arduino.addQueue(count)
 
@@ -282,7 +268,6 @@ class MainWindow(QMainWindow):
         self.qthreadStreamelements.finished.connect(self.qthreadStreamelements.deleteLater)
         self.socketStreamelements.finished.connect(self.quit)
 
-        self.socketStreamelements.resub.connect(self.onSub)
         self.socketStreamelements.giftedSubs.connect(self.onGifted)
         self.socketStreamelements.bits.connect(self.onBits)
 

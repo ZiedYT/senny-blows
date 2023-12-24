@@ -46,6 +46,7 @@ class arduino:
             return False
         
     def write(self,x): 
+        print("Sending {} to USB.".format(x))
         if(self.com==None):
             return
         msg=x+"\n"
