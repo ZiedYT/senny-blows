@@ -104,13 +104,14 @@ class MainWindow(QMainWindow):
         with open(jsonpath) as json_file:
             tempdata=json.load(json_file)    
 
-        # tempdata = json.load(jsonpath) 
+
         self.data["channel_name"] = tempdata.get("channel_name","")
         self.data["streamelementstoken"] = tempdata.get("streamelementstoken","")
         self.data["twitchtoken"] = tempdata.get("twitchtoken","")
+        self.lineEdit_twitchtoken.setText(self.data["twitchtoken"])
+
         self.lineEdit_channelname.setText(self.data["channel_name"] )
         self.lineEdit_SEtoken.setText(self.data["streamelementstoken"])
-        self.lineEdit_twitchtoken.setText(self.data["twitchtoken"])
         self.doubleSpinBox_duration.setValue(tempdata.get("duration",1))
         self.checkBox_multiple.setChecked(tempdata.get("multiple",True))
         self.currport = tempdata.get("port","")
@@ -176,6 +177,11 @@ class MainWindow(QMainWindow):
         self.spinBox_bits_amount:QSpinBox=self.findChild(QSpinBox,"spinBox_bits_amount")
         self.checkBox_multiple:QCheckBox=self.findChild(QCheckBox,"checkBox_multiple")
 
+        self.spinBox_giftedT1_amount.valueChanged.connect(self.saveJson)
+        self.spinBox_giftedT2_amount.valueChanged.connect(self.saveJson)
+        self.spinBox_giftedT3_amount.valueChanged.connect(self.saveJson)
+        self.spinBox_bits_amount.valueChanged.connect(self.saveJson)
+        
     def connectESP(self):
         if(self.arduino!=None):
             indx= self.comboBox_port.currentIndex()
@@ -215,19 +221,20 @@ class MainWindow(QMainWindow):
         self.arduino.duration= self.doubleSpinBox_duration.value()
 
     def Login(self):
+        print("login")
         channel_name= self.lineEdit_channelname.text()
         twitchtoken=self.lineEdit_twitchtoken.text()        
         token=self.lineEdit_SEtoken.text()
 
         self.socketStreamelements.change(token)
         self.data["streamelementstoken"] = token
-
-        self.socketTwitch.updateCredentials(twitchtoken,channel_name)
+        self.socketTwitch.updateCredentials(channel_name,twitchtoken)
+        # self.socketTwitch.tokenValid()
         self.data["twitchtoken"] = twitchtoken
         self.data["channel_name"]=channel_name
 
     def onGifted(self,tier,amount):
-        print("onGifted; tier:",tier,";amount:",amount)
+        print("sub; tier:",tier,";amount:",amount)
         spinbox:QSpinBox = self.findChild(QSpinBox,"spinBox_giftedT{}_amount".format(tier))
         checkbox:QCheckBox =self.findChild(QCheckBox,"checkBox_giftedT{}".format(tier))
         if(checkbox.isChecked()):
@@ -257,7 +264,7 @@ class MainWindow(QMainWindow):
 
     def start_listener(self):
         # self.socketStreamelements = Socket()
-        self.socketStreamelements = StreamElementsClient(self.lineEdit_SEtoken.text())
+        self.socketStreamelements = StreamElementsClient(self,self.lineEdit_SEtoken.text())
         self.socketStreamelements.connect() 
         self.qthreadStreamelements = QThread()
         self.socketStreamelements.moveToThread(self.qthreadStreamelements)
@@ -305,9 +312,10 @@ class MainWindow(QMainWindow):
 
     def quit(self):
         self.socketStreamelements.close()
-        self.socketTwitch.close()
+        # self.socketTwitch.close()
         self.saveJson()
         self.arduino.run_flag=False
+        self.socketStreamelements.run_flag=False
         self.tray_icon.hide()
         sys.exit()
 

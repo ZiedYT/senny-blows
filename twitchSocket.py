@@ -22,7 +22,7 @@ class Socket(QObject):
         self.channelID=""
         self.token=""
         self.ws=self.createSocket()
-        self.updateCredentials(token,channel_name)
+        self.updateCredentials(channel_name,token)
 
         
     def run(self):        
@@ -50,9 +50,9 @@ class Socket(QObject):
         self.unlock()
         return ws
 
-    def updateCredentials(self,token,channel_name):
-        if(  token=="" or channel_name==""):
-            return
+    def updateCredentials(self,channel_name,token):
+        # if(  token=="" or channel_name==""):
+        #     return
         if( token == self.token and channel_name == self.channel_name):
             return
         
@@ -98,6 +98,7 @@ class Socket(QObject):
         
         res = requests.post('https://api.twitch.tv/helix/eventsub/subscriptions', headers=self.headers, json=body).json()
         self.valid = (res.get("message","")!="subscription missing proper authorization")
+        
 
     def reconnect(self):
         self.ws=self.createSocket()
@@ -119,10 +120,11 @@ class Socket(QObject):
 
             try:
                 msg=json.loads(self.ws.recv())
-            except:
+            except Exception as e:
                 if(self.run_flag ):
-                    print("Error listening to twich token, reconnecting")
-                    self.reconnect()
+                    print(e,"Error listening to twich token, reconnecting")
+                    if(not "Expecting value" in e):
+                        self.reconnect()
                 continue
 
             if(self.channel_name == "ziedyt" and msg["metadata"]["message_type"]!="session_keepalive"):
@@ -133,9 +135,12 @@ class Socket(QObject):
 
             if( msg["metadata"]["message_type"]!="session_keepalive"):
                 msgType= msg["payload"]['subscription']["type"]
+                print(msg)
                 if ( msgType== "channel.subscription.gift"):
                     amount = int(msg["payload"]["event"]["total"])
                     tier = int(msg["payload"]["event"].get("tier",1000))
+                    if(type(tier)!=int):
+                        tier=1000
                     tier = int(tier/1000)
                     self.giftedSubs.emit(tier,amount)
 

@@ -23,40 +23,8 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="7" column="1">
-     <widget class="QCheckBox" name="checkBox_giftedT3">
-      <property name="text">
-       <string>T3 GiftedSubs</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="2">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label_amountgifted">
-        <property name="text">
-         <string>Amount:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="spinBox_giftedT1_amount">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>200</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="label_name">
-      <property name="text">
-       <string>Channel name</string>
-      </property>
-     </widget>
+    <item row="3" column="2">
+     <widget class="QComboBox" name="comboBox_port"/>
     </item>
     <item row="1" column="2">
      <widget class="QLineEdit" name="lineEdit_SEtoken">
@@ -71,145 +39,6 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_3">
-      <property name="maximumSize">
-       <size>
-        <width>10</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
-     <widget class="QCheckBox" name="checkBox_giftedT1">
-      <property name="text">
-       <string>T1 GiftedSubs</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLabel" name="label_token">
-      <property name="text">
-       <string>JWT Token</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QLineEdit" name="lineEdit_channelname">
-      <property name="maximumSize">
-       <size>
-        <width>200</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Normal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>USB Port</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="3">
-     <widget class="QPushButton" name="pushButton_connect">
-      <property name="text">
-       <string>Connect to USB</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QComboBox" name="comboBox_port"/>
-    </item>
-    <item row="6" column="2">
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QLabel" name="label_amountgifted_2">
-        <property name="text">
-         <string>Amount:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="spinBox_giftedT2_amount">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>200</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="label_4">
-      <property name="maximumSize">
-       <size>
-        <width>70</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Duration:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="3">
-     <widget class="QPushButton" name="pushButton_token">
-      <property name="text">
-       <string>Get</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="2">
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <item>
-       <widget class="QLabel" name="label_amountgifted_3">
-        <property name="text">
-         <string>Amount:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="spinBox_giftedT3_amount">
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>200</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="2" column="2">
-     <widget class="QLineEdit" name="lineEdit_twitchtoken">
-      <property name="maximumSize">
-       <size>
-        <width>200</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="echoMode">
-       <enum>QLineEdit::Password</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="3">
-     <widget class="QPushButton" name="pushButton_manual">
-      <property name="text">
-       <string>buh low me </string>
-      </property>
-     </widget>
-    </item>
     <item row="8" column="1">
      <widget class="QCheckBox" name="checkBox_bits">
       <property name="text">
@@ -217,44 +46,10 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="3">
-     <widget class="QCheckBox" name="checkBox_multiple">
+    <item row="1" column="1">
+     <widget class="QLabel" name="label_token">
       <property name="text">
-       <string>Multiple per transaction</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="pushButton_login">
-      <property name="text">
-       <string>Log in</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="3">
-     <widget class="QPushButton" name="pushButton_twitchtoken">
-      <property name="text">
-       <string>Get</string>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="3">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="6" column="1">
-     <widget class="QCheckBox" name="checkBox_giftedT2">
-      <property name="text">
-       <string>T2 GiftedSubs</string>
+       <string>JWT Token</string>
       </property>
      </widget>
     </item>
@@ -282,6 +77,74 @@
       </item>
      </layout>
     </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="label_4">
+      <property name="maximumSize">
+       <size>
+        <width>70</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Duration:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_name">
+      <property name="text">
+       <string>Channel name</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_amountgifted">
+        <property name="text">
+         <string>Amount:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_giftedT1_amount">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="maximumSize">
+       <size>
+        <width>10</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QCheckBox" name="checkBox_giftedT2">
+      <property name="text">
+       <string>T2 GiftedSubs</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QPushButton" name="pushButton_login">
+      <property name="text">
+       <string>Log in</string>
+      </property>
+     </widget>
+    </item>
     <item row="4" column="2">
      <widget class="QDoubleSpinBox" name="doubleSpinBox_duration">
       <property name="maximumSize">
@@ -298,12 +161,102 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QLabel" name="label_twitchtoken">
+    <item row="7" column="2">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QLabel" name="label_amountgifted_3">
+        <property name="text">
+         <string>Amount:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_giftedT3_amount">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="pushButton_connect">
       <property name="text">
-       <string>Twitch Token</string>
+       <string>Connect to USB</string>
       </property>
      </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>USB Port</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QPushButton" name="pushButton_token">
+      <property name="text">
+       <string>Get</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QCheckBox" name="checkBox_multiple">
+      <property name="text">
+       <string>Multiple per transaction</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="3">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="7" column="1">
+     <widget class="QCheckBox" name="checkBox_giftedT3">
+      <property name="text">
+       <string>T3 GiftedSubs</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QCheckBox" name="checkBox_giftedT1">
+      <property name="text">
+       <string>T1 GiftedSubs</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_amountgifted_2">
+        <property name="text">
+         <string>Amount:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_giftedT2_amount">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item row="0" column="4">
      <widget class="QLabel" name="label_5">
@@ -315,6 +268,53 @@
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="3">
+     <widget class="QPushButton" name="pushButton_manual">
+      <property name="text">
+       <string>buh low me </string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_channelname">
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Normal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_twitchtoken">
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="echoMode">
+       <enum>QLineEdit::Password</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="label_token_2">
+      <property name="text">
+       <string>Twitch Token</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QPushButton" name="pushButton_twitchtoken">
+      <property name="text">
+       <string>Get</string>
       </property>
      </widget>
     </item>
