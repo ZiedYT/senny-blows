@@ -67,8 +67,7 @@ class Socket(QObject):
         # if( self.tokenValid()):
         self.channelID=self.getUserID(self.channel_name)
         if(self.channelID!=""):
-            if(self.channel_name=="ziedyt"):
-                self.subscribe("channel.ban","1")
+            self.subscribe("channel.ban","1")
             self.subscribe("channel.subscription.gift","1")
             # self.subscribe("channel.subscribe","1")
             # self.subscribe("channel.subscription.message","1")
