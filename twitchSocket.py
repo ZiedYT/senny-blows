@@ -127,14 +127,13 @@ class Socket(QObject):
                 continue
 
             if(self.channel_name == "ziedyt" and msg["metadata"]["message_type"]!="session_keepalive"):
-                print("-------------------")
+                
                 self.giftedSubs.emit(1,1)
-                msgType= msg["payload"]['subscription']["type"]
-                print(msg)
 
             if( msg["metadata"]["message_type"]!="session_keepalive"):
                 msgType= msg["payload"]['subscription']["type"]
                 print(msg)
+                print("-------------------")
                 if ( msgType== "channel.subscription.gift"):
                     amount = int(msg["payload"]["event"]["total"])
                     tier = int(msg["payload"]["event"].get("tier",1000))
