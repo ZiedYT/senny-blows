@@ -232,7 +232,8 @@ class MainWindow(QMainWindow):
         # self.socketTwitch.tokenValid()
         self.data["twitchtoken"] = twitchtoken
         self.data["channel_name"]=channel_name
-
+        self.saveJson()
+        
     def onGifted(self,tier,amount):
         print("sub; tier:",tier,";amount:",amount)
         spinbox:QSpinBox = self.findChild(QSpinBox,"spinBox_giftedT{}_amount".format(tier))
